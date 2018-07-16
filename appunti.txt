@@ -1,0 +1,33 @@
+per passare da 
+
+#lang racket 
+require ("qualcosa.rkt")
+
+a 
+
+#lang s-exp "qualcosa.rkt"
+
+è necessario esportare almeno #%module-begin. Vale solo per i linguaggi fatti da s-exp.
+Per supportare sintassi diverse è necessario implementare 
+un reader (read-syntax) per convertire la sintassi in s-exp.
+E' implementato con tokenizer, che chiama il lexer, e parser.
+
+Il flusso è lexer -> tokenizer -> parser.
+Al livello del lexer è possibile scartare le parti di codice non significative,
+in modo che il parser non se ne debba occupare. 
+Tutto quello che arriva al parser finisce nell'AST.
+
+Il parser (brag) incapsula quello che trova col nome della regola che è stata matchata.
+Ad esempio:
+
+#lang brag
+digit : [0-9]
+
+produce
+
+(digit n)
+
+L'albero a tutti gli effetti è composto da s-exp, quindi
+si può implementare un linguaggio definendo funzioni o macro col nome della regola.
+In pratica si è già dal proprio linguaggio a racket.
+
